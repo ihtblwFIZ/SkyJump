@@ -55,4 +55,25 @@ public abstract class GameObject {
     public void setH(int h) {
         this.h = h;
     }
+
+    // 객체를 그리는 메서드
+    // 자식 클래스에서 구현 필수
+    public abstract void draw(Graphics g);
+
+    // update는 움직이는 객체만 사용 (위치 정보를 업데이트)
+    public void update(double dt) {};
+
+    // resolve는 움직이는 객체만 사용
+    // 움직이는 객체를 중심으로 다른 객체(o)와의 충돌 상황을 확인하고 위치 및 이동 방향 변경
+    // 충돌이 있어서 변경 사항이 있으면 true, 없으면 false 반환
+    public boolean resolve(GameObject o) {
+        return false;
+    };
+
+    // isIn는 움직이는 객체가 다른 객체(o)에 충돌했는지 확인
+    // 좌표를 바탕으로 계산함
+    // 충돌했으면 true, 하지 않았으면 false 반환
+    public boolean isIn(GameObject o) {
+        return false;
+    }
 }
