@@ -1,7 +1,6 @@
 package GameObject;
 
 import java.awt.*;
-import java.awt.geom.Rectangle2D;
 
 
 public class ExitObject extends GameObject {
@@ -16,17 +15,7 @@ public class ExitObject extends GameObject {
         borderColors = Color.BLACK;
     }
 
-    @Override
-    public void draw(Graphics g) {
-        g.setColor(color);
-        g.fillRect(this.getX(), this.getY(), this.getW(), this.getW());
-
-        Graphics2D g2d = (Graphics2D) g;
-
-        g2d.setStroke(new BasicStroke(2));
-        Rectangle2D rect = new Rectangle2D.Float(this.getX(), this.getY(), this.getW(), this.getW());
-        g2d.draw(rect);
-    }
+    // draw는 추후 디자인 변경 사항이 생기면 다시 수정
 
     //깜빡이게 하고 싶어서 넣었는데 될지 모르겠음
     public void update() {
@@ -42,15 +31,12 @@ public class ExitObject extends GameObject {
 
     @Override
     public boolean isIn(GameObject o) {
-        double xmin = this.getX();
-        double ymin = this.getY();
-        double xmax = this.getX() + this.getW();
-        double ymax = this.getY() + this.getH();
+        double xMin = this.getX();
+        double yMin = this.getY();
+        double xMax = this.getX() + this.getW();
+        double yMax = this.getY() + this.getH();
 
-        if (o.getX() + o.getW() > xmin && o.getX() < xmax &&
-                o.getY() + o.getH() > ymin && o.getY() < ymax) {
-            return true;
-        }
-        return false;
+        return o.getX() + o.getW() > xMin && o.getX() < xMax &&
+                o.getY() + o.getH() > yMin && o.getY() < yMax;
     }
 }

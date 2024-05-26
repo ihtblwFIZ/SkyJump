@@ -13,10 +13,6 @@ public class WallObject extends GameObject {
         color= Color.orange;    //벽 내부 채울 색 설정
         borderColors=Color.DARK_GRAY;   //벽 테두리 색 설정
     }
-    public void draw(Graphics g){
-        g.setColor(color);
-        g.fillRect(getX(),getY(),getW(),getH());
-        g.setColor(borderColors);
-        g.drawRect(getX(),getY(),getW(),getH());
-    }
+
+    // draw는 추후 디자인 변경 사항이 생기면 다시 수정
 }

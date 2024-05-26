@@ -1,6 +1,7 @@
 package GameObject;
 
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 
 // 추상 클래스(구현된 코드는 자식 클래스에서 사용 가능, abstract 메서드 구현은 필수)
 public abstract class GameObject {
@@ -57,8 +58,16 @@ public abstract class GameObject {
     }
 
     // 객체를 그리는 메서드
-    // 자식 클래스에서 구현 필수
-    public abstract void draw(Graphics g);
+    // 이번 커밋까지는 draw 내용이 다 동일해서 그냥 여기에 구현해놓음
+    public void draw(Graphics g) {
+        g.setColor(color);
+        g.fillRect(getX(), getY(), getW(), getW());
+
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setStroke(new BasicStroke(2));
+        Rectangle2D rect = new Rectangle2D.Float(getX(), getY(), getW(), getW());
+        g2d.draw(rect);
+    }
 
     // update는 움직이는 객체만 사용 (위치 정보를 업데이트)
     public void update(double dt) {}

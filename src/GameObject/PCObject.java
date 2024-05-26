@@ -2,7 +2,6 @@ package GameObject;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.geom.Rectangle2D;
 
 public class PCObject extends GameObject {
 
@@ -15,16 +14,7 @@ public class PCObject extends GameObject {
         borderColors = Color.BLACK;
     }
 
-    @Override
-    public void draw(Graphics g) {
-        g.setColor(color);
-        g.fillRect(this.getX(), this.getY(), this.getW(), this.getW());
-
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setStroke(new BasicStroke(2));
-        Rectangle2D rect = new Rectangle2D.Float(this.getX(), this.getY(), this.getW(), this.getW());
-        g2d.draw(rect);
-    }
+    // draw는 추후 디자인 변경 사항이 생기면 다시 수정
 
     public void keyPressed(int code) {
         if (code == KeyEvent.VK_LEFT) {
@@ -54,8 +44,8 @@ public class PCObject extends GameObject {
     public void update(double dt) {
         int x = getX();
         int y = getY();
-        x += vx*dt;
-        y += vy*dt;
+        x += (int) (vx * dt);
+        y += (int) (vy * dt);
         setX(x);
         setY(y);
     }
@@ -63,7 +53,7 @@ public class PCObject extends GameObject {
     @Override
     public boolean resolve(GameObject o) {
 
-        if (!(o instanceof GameObject)) {
+        if (o == null) {
             return false;
         }
         if (!o.isIn(this))  //벽, npc, 코인, 출구 오브젝트에 다 있어야함

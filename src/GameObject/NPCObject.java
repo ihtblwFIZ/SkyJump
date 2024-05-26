@@ -2,15 +2,14 @@ package GameObject;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.geom.Rectangle2D;
 
-public class Monster extends GameObject{
+public class NPCObject extends GameObject{
     // x, y 변화
     private double vx, vy;
     // 속도
-    private double speed;
+    private final double speed;
 
-    public Monster(int x, int y, int w, int h) {
+    public NPCObject(int x, int y, int w, int h) {
         super(x, y, w, h);
 
         vx = 0.0;
@@ -22,16 +21,7 @@ public class Monster extends GameObject{
         borderColors = Color.BLACK;
     }
 
-    @Override
-    public void draw(Graphics g) {
-        g.setColor(color);
-        g.fillRect(getX(), getY(), getW(), getH());
-
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setStroke(new BasicStroke(2));
-        Rectangle2D rect = new Rectangle2D.Float(getX(), getY(), getW(), getH());
-        g2d.draw(rect);
-    }
+    // draw는 추후 디자인 변경 사항이 생기면 다시 수정
 
     @Override
     public void update(double dt) {
