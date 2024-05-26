@@ -76,4 +76,5 @@ public abstract class GameObject {
     public boolean isIn(GameObject o) {
         return false;
     }
+
 }
