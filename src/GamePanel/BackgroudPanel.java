@@ -2,7 +2,6 @@ package GamePanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Point2D;
 
 public class BackgroudPanel extends JPanel {
 
