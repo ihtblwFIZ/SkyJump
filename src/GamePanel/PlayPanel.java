@@ -6,16 +6,17 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-public class PlayPanel extends BackgroudPanel{
+public class PlayPanel extends BackgroudPanel implements Runnable {
     // n번째 stage
     int stage = 0;
 
+    // 스테이지 모양과 관련된 변수들
     // 전체 스테이지 디자인
     List<List<Point>> mapDesign = new ArrayList<>();
-
     // 스테이지에서 사용할 디자인 (mapDesign에서 랜덤 3개 + 바닥이 될 7번 디자인)
     List<Integer> stageMap = new ArrayList<>();
 
+    // GameObject와 관련된 변수들
     // 화면 내에서 밟을 수 있는 블록, 스테이지마다 초기화
     List<WallObject> block = new ArrayList<>();
     // 플레이 화면 범위를 설정하는 벽
@@ -24,14 +25,31 @@ public class PlayPanel extends BackgroudPanel{
     public PlayPanel(int w, int h) {
         super(w, h);
 
+        // 전체 맵 디자인 (쓰일거 안 쓰일거 전부)
         setMapDesign();
+        // 천장, 좌우벽
         setWall();
-        setStage();
+
+        // 스레드
+        Thread thread = new Thread(this);
+        thread.start();
     }
 
-    private void setStage() {
+    private void nextStage() {
+        stage++;
+
+        // 맵 디자인 설정
+        block.clear();
         setStageMap();
-        setBlock();
+
+        // 스테이지 넘어가는 텀
+        if (stage > 1) {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                return;
+            }
+        }
     }
 
     private void setWall() {
@@ -43,29 +61,6 @@ public class PlayPanel extends BackgroudPanel{
         wall.add(new WallObject(width - 32, 11, 11, height - 49));
         // 바닥
         wall.add(new WallObject(1, height - 105, width - 15, 50));
-        //wall.add(new WallObject(1, 120, width - 15, 50));
-        //wall.add(new WallObject(1, 310, width - 15, 50));
-        //wall.add(new WallObject(1, 510, width - 15, 50));
-    }
-
-    private void setBlock() {
-        /*Queue<Integer> blockY = new LinkedList<>();
-        blockY.add(130);
-        blockY.add(315);
-        blockY.add(510);
-        blockY.add(695);*/
-        List<Integer> blockY = new ArrayList<>();
-        blockY.add(130);
-        blockY.add(315);
-        blockY.add(510);
-        blockY.add(695);
-
-        for (int i=0; i<3; i++) {
-            for (Point p : mapDesign.get(stageMap.get(i))) {
-                if (blockY.isEmpty()) break;
-                block.add(new WallObject(p.x, blockY.get(i), p.y, 50));
-            }
-        }
     }
 
     // 전체 블록 디자인 틀
@@ -108,6 +103,19 @@ public class PlayPanel extends BackgroudPanel{
 
         stageMap.addAll(stageMapSet);
         Collections.shuffle(stageMap);
+
+        List<Integer> blockY = new ArrayList<>();
+        blockY.add(130);
+        blockY.add(315);
+        blockY.add(510);
+        blockY.add(695);
+
+        for (int i=0; i<3; i++) {
+            for (Point p : mapDesign.get(stageMap.get(i))) {
+                if (blockY.isEmpty()) break;
+                block.add(new WallObject(p.x, blockY.get(i), p.y, 50));
+            }
+        }
     }
 
     @Override
@@ -120,6 +128,31 @@ public class PlayPanel extends BackgroudPanel{
 
         for (WallObject b : block) {
             b.draw(g);
+        }
+    }
+
+    @Override
+    public void run() {
+        while (true) {
+            if (running) {
+                // 1. update
+
+
+                // 2. resolve
+
+
+                // 3. render
+                repaint();
+
+                try {
+                    Thread.sleep(16);
+                } catch (InterruptedException e) {
+                    return;
+                }
+            }
+            else {
+                Thread.yield();
+            }
         }
     }
 }
