@@ -8,10 +8,10 @@ import javax.swing.border.EmptyBorder;
 public class IntroPanel extends BackgroudPanel {
     int width = 0, height = 0;
     JLabel gameName = new JLabel("Sky Jump", SwingConstants.CENTER); // 게임 이름 : Sky Jump, 중앙으로 정렬
-    ImageIcon introTitleIcon = new ImageIcon("images/intro_title_cloud.png"); // title쪽 이미지 아이콘 생성
-    ImageIcon introImageIcon = new ImageIcon("images/intro_centerImg_coin.png"); // 본문 이미지 아이콘 생성
-    JLabel introImageLabel; //대표 이미지
-    JLabel startInfo = new JLabel("PRESS SPACEBAR TO PLAY!", SwingConstants.CENTER);
+    ImageIcon introTitleIcon = new ImageIcon("Images/intro_title_cloud.png"); // title쪽 이미지 아이콘 생성
+    ImageIcon introThumbnailIcon = new ImageIcon("Images/intro_thumbnail.png"); // 본문 썸네일 아이콘 생성
+    JLabel introThumbnailLabel; //썸네일
+    JLabel startInfo = new JLabel("PRESS SPACEBAR TO PLAY!", SwingConstants.CENTER);    //게임 시작 방법
 
 
     public IntroPanel(int w, int h) {
@@ -26,7 +26,7 @@ public class IntroPanel extends BackgroudPanel {
 
         // game Name쪽 이미지
         Image gameNameImage = introTitleIcon.getImage();
-        Image gameNameScaledImage = gameNameImage.getScaledInstance(78, 47, Image.SCALE_SMOOTH); // 원하는 크기로 조정 (예: 100x100)
+        Image gameNameScaledImage = gameNameImage.getScaledInstance(78, 47, Image.SCALE_SMOOTH); // 원하는 크기로 조정
         ImageIcon gameNameScaledIcon = new ImageIcon(gameNameScaledImage);
 
         //game Name 왼쪽
@@ -41,8 +41,8 @@ public class IntroPanel extends BackgroudPanel {
         gameName.setFont(new Font("Goudy Stout", Font.BOLD, 45)); // 폰트 이름, 스타일, 크기 설정
         gameName.setForeground(new Color(0, 0, 0)); // 글자 색상 설정
 
-        // 중앙에 게임 이름 추가
-        gameNamePanel.add(leftImageLabel, BorderLayout.WEST);
+        // 게임 이름, 양옆으로 구름 이미지 추가
+        gameNamePanel.add(leftImageLabel,BorderLayout.WEST);
         gameNamePanel.add(gameName, BorderLayout.CENTER);
         gameNamePanel.add(rightImageLabel, BorderLayout.EAST);
 
@@ -50,25 +50,25 @@ public class IntroPanel extends BackgroudPanel {
         add(gameNamePanel);
 
 
-        /* ------------ 대표 이미지(로고..?) ------------ */
-        //대표 이미지(코인) 크기 조정
-        Image img = introImageIcon.getImage();
+        /* ------------ 썸네일 이미지 ------------ */
+        //썸네일 이미지 크기 조정
+        Image img = introThumbnailIcon.getImage();
         Image scaledImg = img.getScaledInstance(150, 150, Image.SCALE_SMOOTH); // 원하는 크기로 조정(단위는 픽셀)
         ImageIcon scaledIcon = new ImageIcon(scaledImg);
-        introImageLabel = new JLabel(scaledIcon); // 크기 조정된 이미지 label 생성
-        introImageLabel.setHorizontalAlignment(SwingConstants.CENTER); // 이미지 label 중앙 정렬
+        introThumbnailLabel = new JLabel(scaledIcon); // 크기 조정된 이미지 label 생성
+        introThumbnailLabel.setHorizontalAlignment(SwingConstants.CENTER); // 이미지 label 중앙 정렬
 
-        //대표 이미지 띄우기
-        add(introImageLabel);
+        //썸네일 띄우기
+        add(introThumbnailLabel);
 
 
-        /* ------------ 시작 정보 - 스페이스바 누르면 시작! ------------ */
+        /* ------------ 게임 시작 정보 - 스페이스바 누르면 시작! ------------ */
 
-        // 시작 정보 설정 (폰트, 색상)
+        // 게임 시작 정보 설정 (폰트, 색상)
         startInfo.setFont(new Font("Forte", Font.PLAIN, 40)); // 폰트 이름, 스타일, 크기 설정
         startInfo.setForeground(new Color(0, 0, 0)); // 글자 색상 설정
 
-        //시작 정보 띄우기
+        //게임 시작 정보 띄우기
         add(startInfo);
     }
 }
