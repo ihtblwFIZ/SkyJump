@@ -61,11 +61,11 @@ public abstract class GameObject {
     // 이번 커밋까지는 draw 내용이 다 동일해서 그냥 여기에 구현해놓음
     public void draw(Graphics g) {
         g.setColor(color);
-        g.fillRect(getX(), getY(), getW(), getW());
+        g.fillRect(getX(), getY(), getW(), getH());
 
         Graphics2D g2d = (Graphics2D) g;
         g2d.setStroke(new BasicStroke(2));
-        Rectangle2D rect = new Rectangle2D.Float(getX(), getY(), getW(), getW());
+        Rectangle2D rect = new Rectangle2D.Float(getX(), getY(), getW(), getH());
         g2d.draw(rect);
     }
 
