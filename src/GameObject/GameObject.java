@@ -77,13 +77,39 @@ public abstract class GameObject {
     // 움직이는 객체를 중심으로 다른 객체(o)와의 충돌 상황을 확인하고 위치 및 이동 방향 변경
     // 충돌이 있어서 변경 사항이 있으면 true, 없으면 false 반환
     public boolean resolve(GameObject o) {
+        if (o == null) return false;
+        if (!o.isIn(this)) return false;
+
+        if (o instanceof WallObject || o instanceof ExitObject
+                || o instanceof NPCObject || o instanceof PCObject) {
+            // 1. 위에서 접근하는 경우
+
+            // 2. 벽의 왼쪽으로 접근하는 경우
+
+            // 3. 벽의 오른쪽으로 접근하는 경우
+
+            // 4. 밑에서 접근하는 경우
+
+        }
+
+        if (o instanceof CoinObject) {
+            // isIn으로 판단
+        }
+
         return false;
     }
 
-    // isIn는 움직이는 객체가 다른 객체(o)에 충돌했는지 확인
+    // isIn는 움직이는 o 내부에 this의 좌표가 있는지 확인
     // 좌표를 바탕으로 계산함
     // 충돌했으면 true, 하지 않았으면 false 반환
     public boolean isIn(GameObject o) {
+        if (this instanceof CoinObject) {
+            if (y > o.getY() && (y + h) < o.getY()) {
+                return ((x > o.getX() && x < (o.getX() + o.getW()))
+                    || ((x + w) > o.getX() && (x + w) < (o.getX() + o.getW())));
+            }
+        }
+
         return false;
     }
 

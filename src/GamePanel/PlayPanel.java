@@ -57,10 +57,11 @@ public class PlayPanel extends BackgroudPanel implements Runnable {
         // 키 종류는 KeyReleased와 동일
         // 스페이스, 좌우 방향키는 PC 움직임에 필요
         // 엔터로 게임 진행 (이 키는 프레임 단에서 변경해도 상관 없음)
+        pc.keyPressed(e.getKeyCode());
     }
 
     public void keyReleased(KeyEvent e) {
-
+        pc.keyReleased(e.getKeyCode());
     }
 
     private void nextStage() {
@@ -275,10 +276,16 @@ public class PlayPanel extends BackgroudPanel implements Runnable {
                 // 2. resolve
                 for (WallObject w : wall) {
                     pc.resolve(w);
+                    for (NPCObject n : npc) {
+                        n.resolve(w);
+                    }
                 }
 
                 for (WallObject b : block) {
                     pc.resolve(b);
+                    for (NPCObject n : npc) {
+                        n.resolve(b);
+                    }
                 }
 
                 for (NPCObject n : npc) {

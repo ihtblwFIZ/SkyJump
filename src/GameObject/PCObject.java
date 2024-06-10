@@ -50,27 +50,5 @@ public class PCObject extends GameObject {
         setY(y);
     }
 
-    @Override
-    public boolean resolve(GameObject o) {
-
-        if (o == null) {
-            return false;
-        }
-        if (!o.isIn(this))  //벽, npc, 코인, 출구 오브젝트에 다 있어야함
-            return false;
-
-        //이 아래는 벽이랑 충돌했을 때임
-        //npc, 코인, 출구랑 충돌했을 때 위치 다시 설정해야함
-        if (getX() < 5)
-            setX(10);
-        if (getX() + this.getW() > 800)
-            setX(800 - this.getW());
-        if (getY() < 5)
-            setY(10);
-        if (getY() + this.getH() > 800)
-            setY(800 - this.getH());
-        return false;
-    }
-
 }
 
