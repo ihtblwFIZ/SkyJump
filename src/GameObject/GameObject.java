@@ -8,8 +8,8 @@ public abstract class GameObject {
     // 객체의 좌표와 관련된 공통 변수 네 개
     // 변수에 직접 접근하지 못하도록 private으로 설정함
     // get, set으로 접근하게 함
-    private Integer x, y;
-    private Integer w, h;
+    public Integer x, y;
+    public Integer w, h;
 
     // 물체를 그리는 데에 필요한 변수들 (draw에서 사용)
     Color color; // 물체의 색

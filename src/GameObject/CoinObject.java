@@ -3,11 +3,6 @@ package GameObject;
 import java.awt.*;
 
 public class CoinObject extends GameObject {
-    public int x;
-    public int y;
-    public int w;
-    public int h;
-    Color color;
     int centerX, centerY;
 
     public CoinObject(int x, int y, int w, int h) {
@@ -22,11 +17,12 @@ public class CoinObject extends GameObject {
     @Override
     public void draw(Graphics g) {
 
+        System.out.println("?" + x + ", " + y);
         g.setColor(color);
         g.fillOval(x, y, w, h);
 
         Graphics2D g2 = (Graphics2D) g;
-        g2.setStroke(new BasicStroke(2));
+        g2.setStroke(new BasicStroke(4));
         // g2.setPaint(gradientPaint);
         g.setColor(Color.black);
         g.drawOval(x, y, w, h);

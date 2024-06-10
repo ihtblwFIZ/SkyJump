@@ -1,12 +1,13 @@
 package GamePanel;
 
+import GameObject.CoinObject;
 import GameObject.WallObject;
 
 import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-public class PlayPanel extends BackgroudPanel implements Runnable {
+public class PlayPanel extends BackgroudPanel /*implements Runnable*/ {
     // n번째 stage
     int stage = 0;
 
@@ -21,6 +22,14 @@ public class PlayPanel extends BackgroudPanel implements Runnable {
     List<WallObject> block = new ArrayList<>();
     // 플레이 화면 범위를 설정하는 벽
     List<WallObject> wall = new ArrayList<>();
+    // 블록의 위치
+    List<Integer> blockY = new ArrayList<>();
+    // 코인 개수
+    int coinNum = 0;
+    // 코인
+    List<CoinObject> coin = new ArrayList<>();
+    // NPC 수
+    int npcNum = 0;
 
     public PlayPanel(int w, int h) {
         super(w, h);
@@ -30,9 +39,12 @@ public class PlayPanel extends BackgroudPanel implements Runnable {
         // 천장, 좌우벽
         setWall();
 
+        // 스테이지 초기화
+        nextStage();
+
         // 스레드
-        Thread thread = new Thread(this);
-        thread.start();
+        //Thread thread = new Thread(this);
+        //thread.start();
     }
 
     private void nextStage() {
@@ -42,13 +54,60 @@ public class PlayPanel extends BackgroudPanel implements Runnable {
         block.clear();
         setStageMap();
 
+        // coin 관련 설정
+        coinNum = stage * 2;
+        coin.clear();
+        setCoin();
+
+        // NPC 관련 설정
+        npcNum = stage;
+
+        // PC 관련 설정
+
+
+        // Exit 관련 설정
+
+
         // 스테이지 넘어가는 텀
-        if (stage > 1) {
+        /*if (stage > 1) {
             try {
                 Thread.sleep(500);
-            } catch (InterruptedException e) {
-                return;
+            } catch (InterruptedException ignored) {
             }
+        }*/
+    }
+
+    private void setCoin() {
+        Random random = new Random();
+
+        List<Integer> coinX = new ArrayList<>();
+
+        while (coinX.size() < coinNum) {
+            int x = random.nextInt(width - 100) + 15;
+            boolean isVaild = true;
+
+            for (int cx : coinX) {
+                if (Math.abs(cx - x) <= 40) {
+                    isVaild = false;
+                    break;
+                }
+            }
+
+            if (isVaild) {
+                coinX.add(x);
+            }
+        }
+
+        System.out.println(coinNum);
+        System.out.println(coinX);
+
+        for (int i=0; i<coinNum; i++) {
+            int y = blockY.get(random.nextInt(4));
+            coin.add(new CoinObject(coinX.get(i), y - 70, 30, 30));
+        }
+
+        for (CoinObject c : coin) {
+            System.out.println("plz " + c.getX() + ", " + c.getY());
         }
     }
 
@@ -104,7 +163,6 @@ public class PlayPanel extends BackgroudPanel implements Runnable {
         stageMap.addAll(stageMapSet);
         Collections.shuffle(stageMap);
 
-        List<Integer> blockY = new ArrayList<>();
         blockY.add(130);
         blockY.add(315);
         blockY.add(510);
@@ -129,14 +187,20 @@ public class PlayPanel extends BackgroudPanel implements Runnable {
         for (WallObject b : block) {
             b.draw(g);
         }
+
+        for (CoinObject c : coin) {
+            c.draw(g);
+        }
     }
 
-    @Override
+    /*@Override
     public void run() {
         while (true) {
             if (running) {
                 // 1. update
-
+                if (block.isEmpty()) {
+                    nextStage();
+                }
 
                 // 2. resolve
 
@@ -154,5 +218,5 @@ public class PlayPanel extends BackgroudPanel implements Runnable {
                 Thread.yield();
             }
         }
-    }
+    }*/
 }
