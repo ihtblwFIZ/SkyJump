@@ -1,10 +1,8 @@
 package GamePanel;
-
 import javax.swing.*;
 import java.awt.*;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-
 public class IntroPanel extends BackgroudPanel {
     int width = 0, height = 0;
     JLabel gameName = new JLabel("Sky Jump", SwingConstants.CENTER); // 게임 이름 : Sky Jump, 중앙으로 정렬
@@ -12,7 +10,6 @@ public class IntroPanel extends BackgroudPanel {
     ImageIcon introThumbnailIcon = new ImageIcon("Images/intro_thumbnail.png"); // 본문 썸네일 아이콘 생성
     JLabel introThumbnailLabel; //썸네일
     JLabel startInfo = new JLabel("PRESS SPACEBAR TO PLAY!", SwingConstants.CENTER);    //게임 시작 방법
-
 
     public IntroPanel(int w, int h) {
         super(w, h);
@@ -49,8 +46,8 @@ public class IntroPanel extends BackgroudPanel {
         //게임이름 Panel 띄우기
         add(gameNamePanel);
 
-
         /* ------------ 썸네일 이미지 ------------ */
+
         //썸네일 이미지 크기 조정
         Image img = introThumbnailIcon.getImage();
         Image scaledImg = img.getScaledInstance(150, 150, Image.SCALE_SMOOTH); // 원하는 크기로 조정(단위는 픽셀)
@@ -60,7 +57,6 @@ public class IntroPanel extends BackgroudPanel {
 
         //썸네일 띄우기
         add(introThumbnailLabel);
-
 
         /* ------------ 게임 시작 정보 - 스페이스바 누르면 시작! ------------ */
 
