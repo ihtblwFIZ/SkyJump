@@ -1,6 +1,8 @@
 package GamePanel;
 
 import GameObject.CoinObject;
+import GameObject.NPCObject;
+import GameObject.PCObject;
 import GameObject.WallObject;
 
 import java.awt.*;
@@ -30,6 +32,10 @@ public class PlayPanel extends BackgroudPanel /*implements Runnable*/ {
     List<CoinObject> coin = new ArrayList<>();
     // NPC 수
     int npcNum = 0;
+    // NPC
+    List<NPCObject> npc = new ArrayList<>();
+    // PC
+    PCObject pc = null;
 
     public PlayPanel(int w, int h) {
         super(w, h);
@@ -61,9 +67,11 @@ public class PlayPanel extends BackgroudPanel /*implements Runnable*/ {
 
         // NPC 관련 설정
         npcNum = stage;
+        npc.clear();
+        setNpc();
 
         // PC 관련 설정
-
+        setPc();
 
         // Exit 관련 설정
 
@@ -77,37 +85,55 @@ public class PlayPanel extends BackgroudPanel /*implements Runnable*/ {
         }*/
     }
 
-    private void setCoin() {
+    private List<Integer> randomX(int num) {
         Random random = new Random();
 
-        List<Integer> coinX = new ArrayList<>();
+        List<Integer> rx = new ArrayList<>();
 
-        while (coinX.size() < coinNum) {
-            int x = random.nextInt(width - 100) + 15;
+        while (rx.size() < num) {
+            int x = random.nextInt(width - 100) +15;
             boolean isVaild = true;
 
-            for (int cx : coinX) {
-                if (Math.abs(cx - x) <= 40) {
+            for (int r : rx) {
+                if (Math.abs(r - x) <= 40) {
                     isVaild = false;
                     break;
                 }
             }
 
             if (isVaild) {
-                coinX.add(x);
+                rx.add(x);
             }
         }
 
-        System.out.println(coinNum);
-        System.out.println(coinX);
+        return rx;
+    }
+
+    private void setPc() {
+        Random random = new Random();
+        int pcX = randomX(1).get(0);
+
+        int y = blockY.get(random.nextInt(4));
+        pc = new PCObject(pcX, y - 70, 30, 70);
+    }
+
+    private void setNpc() {
+        Random random = new Random();
+        List<Integer> npcX = randomX(npcNum);
+
+        for (int i =0; i<npcNum; i++) {
+            int y = blockY.get(random.nextInt(4));
+            npc.add(new NPCObject(npcX.get(i), y - 70, 30, 70));
+        }
+    }
+
+    private void setCoin() {
+        Random random = new Random();
+        List<Integer> coinX = randomX(coinNum);
 
         for (int i=0; i<coinNum; i++) {
             int y = blockY.get(random.nextInt(4));
             coin.add(new CoinObject(coinX.get(i), y - 70, 30, 30));
-        }
-
-        for (CoinObject c : coin) {
-            System.out.println("plz " + c.getX() + ", " + c.getY());
         }
     }
 
@@ -180,16 +206,22 @@ public class PlayPanel extends BackgroudPanel /*implements Runnable*/ {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        for (WallObject w : wall) {
-            w.draw(g);
-        }
-
         for (WallObject b : block) {
             b.draw(g);
         }
 
         for (CoinObject c : coin) {
             c.draw(g);
+        }
+
+        for (NPCObject n : npc) {
+            n.draw(g);
+        }
+
+        pc.draw(g);
+
+        for (WallObject w : wall) {
+            w.draw(g);
         }
     }
 

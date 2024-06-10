@@ -64,8 +64,9 @@ public abstract class GameObject {
         g.fillRect(getX(), getY(), getW(), getH());
 
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setStroke(new BasicStroke(2));
+        g2d.setStroke(new BasicStroke(4));
         Rectangle2D rect = new Rectangle2D.Float(getX(), getY(), getW(), getH());
+        g.setColor(borderColors);
         g2d.draw(rect);
     }
 
