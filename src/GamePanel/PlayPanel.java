@@ -1,15 +1,13 @@
 package GamePanel;
 
-import GameObject.CoinObject;
-import GameObject.NPCObject;
-import GameObject.PCObject;
-import GameObject.WallObject;
+import GameObject.*;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.*;
 import java.util.List;
 
-public class PlayPanel extends BackgroudPanel /*implements Runnable*/ {
+public class PlayPanel extends BackgroudPanel implements Runnable {
     // n번째 stage
     int stage = 0;
 
@@ -36,6 +34,8 @@ public class PlayPanel extends BackgroudPanel /*implements Runnable*/ {
     List<NPCObject> npc = new ArrayList<>();
     // PC
     PCObject pc = null;
+    // Exit
+    ExitObject exit = null;
 
     public PlayPanel(int w, int h) {
         super(w, h);
@@ -53,6 +53,16 @@ public class PlayPanel extends BackgroudPanel /*implements Runnable*/ {
         //thread.start();
     }
 
+    public void keyPressed(KeyEvent e) {
+        // 키 종류는 KeyReleased와 동일
+        // 스페이스, 좌우 방향키는 PC 움직임에 필요
+        // 엔터로 게임 진행 (이 키는 프레임 단에서 변경해도 상관 없음)
+    }
+
+    public void keyReleased(KeyEvent e) {
+
+    }
+
     private void nextStage() {
         stage++;
 
@@ -60,32 +70,32 @@ public class PlayPanel extends BackgroudPanel /*implements Runnable*/ {
         block.clear();
         setStageMap();
 
-        // coin 관련 설정
-        coinNum = stage * 2;
-        coin.clear();
-        setCoin();
+        // PC 관련 설정
+        setPc();
 
         // NPC 관련 설정
         npcNum = stage;
         npc.clear();
         setNpc();
 
-        // PC 관련 설정
-        setPc();
+        // coin 관련 설정
+        coinNum = stage * 2;
+        coin.clear();
+        setCoin();
 
         // Exit 관련 설정
-
+        exit = null;
 
         // 스테이지 넘어가는 텀
-        /*if (stage > 1) {
+        if (stage > 1) {
             try {
                 Thread.sleep(500);
             } catch (InterruptedException ignored) {
             }
-        }*/
+        }
     }
 
-    private List<Integer> randomX(int num) {
+    private List<Integer> randomX(int num, boolean isPc) {
         Random random = new Random();
 
         List<Integer> rx = new ArrayList<>();
@@ -96,6 +106,10 @@ public class PlayPanel extends BackgroudPanel /*implements Runnable*/ {
 
             for (int r : rx) {
                 if (Math.abs(r - x) <= 40) {
+                    isVaild = false;
+                    break;
+                }
+                if (!isPc && Math.abs(pc.getX() - x) <= 40) {
                     isVaild = false;
                     break;
                 }
@@ -111,7 +125,7 @@ public class PlayPanel extends BackgroudPanel /*implements Runnable*/ {
 
     private void setPc() {
         Random random = new Random();
-        int pcX = randomX(1).get(0);
+        int pcX = randomX(1, true).get(0);
 
         int y = blockY.get(random.nextInt(4));
         pc = new PCObject(pcX, y - 70, 30, 70);
@@ -119,7 +133,7 @@ public class PlayPanel extends BackgroudPanel /*implements Runnable*/ {
 
     private void setNpc() {
         Random random = new Random();
-        List<Integer> npcX = randomX(npcNum);
+        List<Integer> npcX = randomX(npcNum, false);
 
         for (int i =0; i<npcNum; i++) {
             int y = blockY.get(random.nextInt(4));
@@ -129,7 +143,7 @@ public class PlayPanel extends BackgroudPanel /*implements Runnable*/ {
 
     private void setCoin() {
         Random random = new Random();
-        List<Integer> coinX = randomX(coinNum);
+        List<Integer> coinX = randomX(coinNum, false);
 
         for (int i=0; i<coinNum; i++) {
             int y = blockY.get(random.nextInt(4));
@@ -177,6 +191,14 @@ public class PlayPanel extends BackgroudPanel /*implements Runnable*/ {
         mapDesign.get(6).add(new Point(200, 500));
     }
 
+    private void setExit() {
+        Random random = new Random();
+        int exitX = randomX(1, false).get(0);
+
+        int y = blockY.get(random.nextInt(4));
+        exit = new ExitObject(exitX, y - 70, 30, 70);
+    }
+
     // mapDesign에서 3개 선택, 7번째는 바닥.
     private void setStageMap() {
         Random random = new Random();
@@ -202,6 +224,10 @@ public class PlayPanel extends BackgroudPanel /*implements Runnable*/ {
         }
     }
 
+    private void gameOver() {
+
+    }
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -220,12 +246,14 @@ public class PlayPanel extends BackgroudPanel /*implements Runnable*/ {
 
         pc.draw(g);
 
+        exit.draw(g);
+
         for (WallObject w : wall) {
             w.draw(g);
         }
     }
 
-    /*@Override
+    @Override
     public void run() {
         while (true) {
             if (running) {
@@ -234,8 +262,34 @@ public class PlayPanel extends BackgroudPanel /*implements Runnable*/ {
                     nextStage();
                 }
 
-                // 2. resolve
+                pc.update(1.5);
 
+                for (NPCObject n : npc) {
+                    n.update(1);
+                }
+
+                if (coinNum == 0 && exit == null) {
+                    setExit();
+                }
+
+                // 2. resolve
+                for (WallObject w : wall) {
+                    pc.resolve(w);
+                }
+
+                for (WallObject b : block) {
+                    pc.resolve(b);
+                }
+
+                for (NPCObject n : npc) {
+                    pc.resolve(n);
+                }
+
+                for (CoinObject c : coin) {
+                    pc.resolve(c);
+                }
+
+                pc.resolve(exit);
 
                 // 3. render
                 repaint();
@@ -250,5 +304,5 @@ public class PlayPanel extends BackgroudPanel /*implements Runnable*/ {
                 Thread.yield();
             }
         }
-    }*/
+    }
 }
