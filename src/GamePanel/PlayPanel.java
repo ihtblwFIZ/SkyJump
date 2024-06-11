@@ -31,7 +31,7 @@ public class PlayPanel extends BackgroudPanel implements Runnable {
     // NPC 수
     int npcNum = 0;
     // NPC
-    List<NPCObject> npc = new ArrayList<>();
+    final List<NPCObject> npc = new ArrayList<>();
     // PC
     PCObject pc = null;
     // Exit
@@ -39,6 +39,8 @@ public class PlayPanel extends BackgroudPanel implements Runnable {
 
     public PlayPanel(int w, int h) {
         super(w, h);
+
+        setLayout(null);
 
         // 전체 맵 디자인 (쓰일거 안 쓰일거 전부)
         setMapDesign();
@@ -228,7 +230,6 @@ public class PlayPanel extends BackgroudPanel implements Runnable {
         coin.clear();
         npcNum = 0;
         npc.clear();
-        pc = null;
         exit = null;
     }
 
@@ -320,10 +321,13 @@ public class PlayPanel extends BackgroudPanel implements Runnable {
                 }
 
                 // pc와 npc 충돌 확인
-                for (NPCObject n : npc) {
-                    if (pc.resolve(n)) {
-                        resetStage();
-                        gameOver();
+                synchronized (npc) {
+                    for (NPCObject n : npc) {
+                        if (pc.resolve(n)) {
+                            resetStage();
+                            System.out.println("reset");
+                            gameOver();
+                        }
                     }
                 }
 
@@ -353,6 +357,7 @@ public class PlayPanel extends BackgroudPanel implements Runnable {
                 }
             }
             else {
+                resetStage();
                 Thread.yield();
             }
         }

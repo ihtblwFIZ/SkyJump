@@ -87,51 +87,43 @@ public abstract class GameObject {
     // 충돌이 있어서 변경 사항이 있으면 true, 없으면 false 반환
     public boolean resolve(GameObject o) {
         if (o == null) return false;
-        //if (!o.isIn(this)) return false;
 
-        //if (o instanceof CoinObject) {
-            // isIn으로 판단
-        //    return isIn(o);
-        //}
-
-        //else {
-            // 1. 위에서 접근하는 경우 - isOnGround 설정 필요
-            if (y < o.getY() && (y + h) > o.getY()) {
-                if ((x > o.getX() && x < (o.getX() + o.getW()))
-                        || ((x + w) > o.getX() && (x + w) < (o.getX() + o.getW()))) {
-                    y =  o.getY() - h;
-                    return true;
-                }
+        // 1. 위에서 접근하는 경우 - isOnGround 설정 필요
+        if (y < o.getY() && (y + h) > o.getY()) {
+            if ((x > o.getX() && x < (o.getX() + o.getW()))
+                    || ((x + w) > o.getX() && (x + w) < (o.getX() + o.getW()))) {
+                y =  o.getY() - h;
+                return true;
             }
+        }
 
-            // 2. 밑에서 접근하는 경우
-            if (y < (o.getY() + o.getH()) && (y + h) > (o.getY() + o.getH())) {
-                if ((x > o.getX() && x < (o.getX() + o.getW()))
-                        || ((x + w) > o.getX() && (x + w) < (o.getX() + o.getW()))) {
-                    y = o.getY() + o.getH();
-                    vy =0;
-                    return true;
-                }
+        // 2. 밑에서 접근하는 경우
+        if (y < (o.getY() + o.getH()) && (y + h) > (o.getY() + o.getH())) {
+            if ((x > o.getX() && x < (o.getX() + o.getW()))
+                    || ((x + w) > o.getX() && (x + w) < (o.getX() + o.getW()))) {
+                y = o.getY() + o.getH();
+                vy =0;
+                return true;
             }
+        }
 
-            // 3. 벽의 왼쪽으로 접근하는 경우
-            if (x < o.getX() && (x + w) > o.getX()) {
-                if ((y > o.getY() && y < (o.getY()+o.getH()))
-                        || ((y + h) > o.getY() && (y + h) < (o.getY() + o.getH()))) {
-                    x = o.getX() - w;
-                    return true;
-                }
+        // 3. 벽의 왼쪽으로 접근하는 경우
+        if (x < o.getX() && (x + w) > o.getX()) {
+            if ((y >= o.getY() && y <= (o.getY()+o.getH()))
+                    || ((y + h) >= o.getY() && (y + h) <= (o.getY() + o.getH()))) {
+                x = o.getX() - w;
+                return true;
             }
+        }
 
-            // 4. 벽의 오른쪽으로 접근하는 경우
-            if (x < (o.getX() + o.getW()) && (x + w) > (o.getX() + o.getW())) {
-                if ((y > o.getY() && y < (o.getY()+o.getH()))
-                        || ((y + h) > o.getY() && (y + h) < (o.getY() + o.getH()))) {
-                    x = o.getX() + o.getW();
-                    return true;
-                }
+        // 4. 벽의 오른쪽으로 접근하는 경우
+        if (x < (o.getX() + o.getW()) && (x + w) > (o.getX() + o.getW())) {
+            if ((y >= o.getY() && y <= (o.getY()+o.getH()))
+                    || ((y + h) >= o.getY() && (y + h) <= (o.getY() + o.getH()))) {
+                x = o.getX() + o.getW();
+                return true;
             }
-        //}
+        }
 
         return false;
     }
