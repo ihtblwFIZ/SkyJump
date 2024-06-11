@@ -8,8 +8,17 @@ public abstract class GameObject {
     // 객체의 좌표와 관련된 공통 변수 네 개
     // 변수에 직접 접근하지 못하도록 private으로 설정함
     // get, set으로 접근하게 함
-    public Integer x, y;
-    public Integer w, h;
+    protected Integer x, y;
+    protected Integer w, h;
+
+    // x, y 속도
+    protected double vx = 0.0, vy = 0.0;
+    // 땅에 있는지 (떨어지는 위치에 있지 않은지 확인)
+    protected boolean isOnGround = true;
+
+    protected static final double SPEED = 5.0;
+    protected static final double JUMP_SPEED = 5.0;
+    protected static final double GRAVITY = 0.05;
 
     // 물체를 그리는 데에 필요한 변수들 (draw에서 사용)
     Color color; // 물체의 색
@@ -71,30 +80,58 @@ public abstract class GameObject {
     }
 
     // update는 움직이는 객체만 사용 (위치 정보를 업데이트)
-    public void update(double dt) {}
+    public void update(double dt) { }
 
     // resolve는 움직이는 객체만 사용
     // 움직이는 객체를 중심으로 다른 객체(o)와의 충돌 상황을 확인하고 위치 및 이동 방향 변경
     // 충돌이 있어서 변경 사항이 있으면 true, 없으면 false 반환
     public boolean resolve(GameObject o) {
         if (o == null) return false;
-        if (!o.isIn(this)) return false;
+        //if (!o.isIn(this)) return false;
 
-        if (o instanceof WallObject || o instanceof ExitObject
-                || o instanceof NPCObject || o instanceof PCObject) {
-            // 1. 위에서 접근하는 경우
-
-            // 2. 벽의 왼쪽으로 접근하는 경우
-
-            // 3. 벽의 오른쪽으로 접근하는 경우
-
-            // 4. 밑에서 접근하는 경우
-
-        }
-
-        if (o instanceof CoinObject) {
+        //if (o instanceof CoinObject) {
             // isIn으로 판단
-        }
+        //    return isIn(o);
+        //}
+
+        //else {
+            // 1. 위에서 접근하는 경우 - isOnGround 설정 필요
+            if (y < o.getY() && (y + h) > o.getY()) {
+                if ((x > o.getX() && x < (o.getX() + o.getW()))
+                        || ((x + w) > o.getX() && (x + w) < (o.getX() + o.getW()))) {
+                    y =  o.getY() - h;
+                    return true;
+                }
+            }
+
+            // 2. 밑에서 접근하는 경우
+            if (y < (o.getY() + o.getH()) && (y + h) > (o.getY() + o.getH())) {
+                if ((x > o.getX() && x < (o.getX() + o.getW()))
+                        || ((x + w) > o.getX() && (x + w) < (o.getX() + o.getW()))) {
+                    y = o.getY() + o.getH();
+                    vy =0;
+                    return true;
+                }
+            }
+
+            // 3. 벽의 왼쪽으로 접근하는 경우
+            if (x < o.getX() && (x + w) > o.getX()) {
+                if ((y > o.getY() && y < (o.getY()+o.getH()))
+                        || ((y + h) > o.getY() && (y + h) < (o.getY() + o.getH()))) {
+                    x = o.getX() - w;
+                    return true;
+                }
+            }
+
+            // 4. 벽의 오른쪽으로 접근하는 경우
+            if (x < (o.getX() + o.getW()) && (x + w) > (o.getX() + o.getW())) {
+                if ((y > o.getY() && y < (o.getY()+o.getH()))
+                        || ((y + h) > o.getY() && (y + h) < (o.getY() + o.getH()))) {
+                    x = o.getX() + o.getW();
+                    return true;
+                }
+            }
+        //}
 
         return false;
     }

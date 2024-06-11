@@ -2,20 +2,14 @@ package GameObject;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.Random;
 
 public class NPCObject extends GameObject{
-    // x, y 변화
-    private final double vx;
-    private final double vy;
-    // 속도
-    private final double speed;
+    boolean direction;
+    boolean jump;
 
     public NPCObject(int x, int y, int w, int h) {
         super(x, y, w, h);
-
-        speed = 5.0;
-        vx = 1.0;
-        vy = 1.0;
 
         // 색 임의 설정 -> 빨간색
         color = Color.RED;
@@ -24,9 +18,30 @@ public class NPCObject extends GameObject{
 
     // draw는 추후 디자인 변경 사항이 생기면 다시 수정
 
+    public void setDirection() {
+        Random random = new Random();
+        int d = random.nextInt(10);
+
+        if (d < 5) direction = true;
+        if (d > 5) direction = false;
+        if (d < 4) jump = true;
+    }
+
     @Override
     public void update(double dt) {
-        setX((int) (getX() + vx * dt));
-        setY((int) (getY() + vy * dt));
+        vy +=GRAVITY * dt;
+
+        if (direction) {
+            x++;
+        }
+        if (!direction) {
+            x--;
+        }
+        if (jump) {
+            vy = -JUMP_SPEED;
+            jump = false;
+        }
+
+        y += (int) (vy * dt);
     }
 }

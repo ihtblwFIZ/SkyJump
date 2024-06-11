@@ -45,12 +45,9 @@ public class PlayPanel extends BackgroudPanel implements Runnable {
         // 천장, 좌우벽
         setWall();
 
-        // 스테이지 초기화
-        nextStage();
-
         // 스레드
-        //Thread thread = new Thread(this);
-        //thread.start();
+        Thread thread = new Thread(this);
+        thread.start();
     }
 
     public void keyPressed(KeyEvent e) {
@@ -125,10 +122,9 @@ public class PlayPanel extends BackgroudPanel implements Runnable {
     }
 
     private void setPc() {
-        Random random = new Random();
         int pcX = randomX(1, true).get(0);
 
-        int y = blockY.get(random.nextInt(4));
+        int y = blockY.get(1);
         pc = new PCObject(pcX, y - 70, 30, 70);
     }
 
@@ -169,6 +165,7 @@ public class PlayPanel extends BackgroudPanel implements Runnable {
             mapDesign.add(new ArrayList<>());
         }
 
+        // x = x, y = width
         mapDesign.get(0).add(new Point(0, 200));
         mapDesign.get(0).add(new Point(300, 200));
         mapDesign.get(0).add(new Point(600, 200));
@@ -190,6 +187,11 @@ public class PlayPanel extends BackgroudPanel implements Runnable {
 
         mapDesign.get(6).add(new Point(0, 100));
         mapDesign.get(6).add(new Point(200, 500));
+
+        blockY.add(130);
+        blockY.add(315);
+        blockY.add(510);
+        blockY.add(695);
     }
 
     private void setExit() {
@@ -212,11 +214,6 @@ public class PlayPanel extends BackgroudPanel implements Runnable {
         stageMap.addAll(stageMapSet);
         Collections.shuffle(stageMap);
 
-        blockY.add(130);
-        blockY.add(315);
-        blockY.add(510);
-        blockY.add(695);
-
         for (int i=0; i<3; i++) {
             for (Point p : mapDesign.get(stageMap.get(i))) {
                 if (blockY.isEmpty()) break;
@@ -225,8 +222,24 @@ public class PlayPanel extends BackgroudPanel implements Runnable {
         }
     }
 
-    private void gameOver() {
+    private void resetStage() {
+        block.clear();
+        coinNum = 0;
+        coin.clear();
+        npcNum = 0;
+        npc.clear();
+        pc = null;
+        exit = null;
+    }
 
+    private void gameOver() {
+        Component targetComponent = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
+        Frame frame = (Frame) targetComponent;
+        frame.display = 2;
+    }
+
+    public void setScore() {
+        yourScore = 0;
     }
 
     @Override
@@ -245,9 +258,13 @@ public class PlayPanel extends BackgroudPanel implements Runnable {
             n.draw(g);
         }
 
-        pc.draw(g);
+        if (pc != null) {
+            pc.draw(g);
+        }
 
-        exit.draw(g);
+        if (exit != null) {
+            exit.draw(g);
+        }
 
         for (WallObject w : wall) {
             w.draw(g);
@@ -256,24 +273,37 @@ public class PlayPanel extends BackgroudPanel implements Runnable {
 
     @Override
     public void run() {
+        int moveNpc = 0;
+
         while (true) {
             if (running) {
                 // 1. update
+                // block은 resetStage에서 clear
                 if (block.isEmpty()) {
                     nextStage();
                 }
 
+                // pc 움직임
                 pc.update(1.5);
 
+                // npc 움직임
                 for (NPCObject n : npc) {
-                    n.update(1);
+                    n.update(1.5);
+
+                    moveNpc++;
+                    if (moveNpc > 50) {
+                        n.setDirection();
+                        moveNpc = 0;
+                    }
                 }
 
-                if (coinNum == 0 && exit == null) {
+                // coin을 모두 획득한 상태에서 exit이 없으면 생성
+                if (coinNum <= 0 && exit == null) {
                     setExit();
                 }
 
                 // 2. resolve
+                // pc와 npc 벽(천장, 좌우벽) 충돌 확인
                 for (WallObject w : wall) {
                     pc.resolve(w);
                     for (NPCObject n : npc) {
@@ -281,6 +311,7 @@ public class PlayPanel extends BackgroudPanel implements Runnable {
                     }
                 }
 
+                // pc와 npc 블록 충돌 확인
                 for (WallObject b : block) {
                     pc.resolve(b);
                     for (NPCObject n : npc) {
@@ -288,15 +319,29 @@ public class PlayPanel extends BackgroudPanel implements Runnable {
                     }
                 }
 
+                // pc와 npc 충돌 확인
                 for (NPCObject n : npc) {
-                    pc.resolve(n);
+                    if (pc.resolve(n)) {
+                        resetStage();
+                        gameOver();
+                    }
                 }
 
-                for (CoinObject c : coin) {
-                    pc.resolve(c);
+                // coin 획득 확인, 점수 증가
+                Iterator<CoinObject> c = coin.iterator();
+                while (c.hasNext()) {
+                    if (pc.resolve(c.next())) {
+                        c.remove();
+                        coinNum--;
+                        yourScore += 10;
+                    }
                 }
 
-                pc.resolve(exit);
+                // 스테이지 클리어 조건 확인
+                // (coin 모두 획득 후 exit 접촉)
+                if (pc.resolve(exit)) {
+                    resetStage();
+                }
 
                 // 3. render
                 repaint();
