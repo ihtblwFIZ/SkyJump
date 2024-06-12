@@ -26,9 +26,12 @@ SkyJump 게임을 다운로드하려면 [여기](https://github.com/ihtblwFIZ/Sk
 게임에 대한 피드백은 매우 소중합니다! 게임 플레이 중 발생한 버그나 개선 사항이 있다면 [이슈 트래커](https://github.com/ihtblwFIZ/SkyJump/issues)를 통해 알려주세요.
 
 ### Contributor
-[김하연](https://github.com/ihtblwFIZ)
-[황재희](https://github.com/hwangjaehee)
-[전서진](https://github.com/iamseojin)
-[이연우](https://github.com/Dldusdn1)
+- [김하연](https://github.com/ihtblwFIZ)
+
+- [황재희](https://github.com/hwangjaehee)
+
+- [전서진](https://github.com/iamseojin)
+
+- [이연우](https://github.com/Dldusdn1)
 
 ### License
