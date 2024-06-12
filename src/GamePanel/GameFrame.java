@@ -58,8 +58,10 @@ public class GameFrame extends JFrame implements Runnable, KeyListener {
     @Override
     public synchronized void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            if (!playPanel.running)
+            if (!playPanel.running) {
+                gameoverPanel.setScore();
                 display++;
+            }
             if (display > 2) {
                 display = 0;
             }
