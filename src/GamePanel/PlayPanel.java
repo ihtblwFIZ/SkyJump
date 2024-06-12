@@ -234,6 +234,7 @@ public class PlayPanel extends BackgroudPanel implements Runnable {
     }
 
     private void gameOver() {
+        stage = 0;
         Component targetComponent = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
         Frame frame = (Frame) targetComponent;
         frame.display = 2;
@@ -321,13 +322,14 @@ public class PlayPanel extends BackgroudPanel implements Runnable {
                 }
 
                 // pc와 npc 충돌 확인
+                List<NPCObject> npcCopy;
                 synchronized (npc) {
-                    for (NPCObject n : npc) {
-                        if (pc.resolve(n)) {
-                            resetStage();
-                            System.out.println("reset");
-                            gameOver();
-                        }
+                    npcCopy = new ArrayList<>(npc);
+                }
+                for (NPCObject n : npcCopy) {
+                    if (pc.resolve(n)) {
+                        resetStage();
+                        gameOver();
                     }
                 }
 
