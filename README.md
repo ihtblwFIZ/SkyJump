@@ -22,6 +22,10 @@ SkyJump는 방향키를 조작하여 NPC를 피하여 코인을 획득하는 1�
 ### Download
 SkyJump 게임을 다운로드하려면 [여기](https://github.com/ihtblwFIZ/SkyJump/releases)에서 최신 릴리스를 확인하세요. 압축 파일을 다운로드하고, 압축을 푼 후 실행 파일을 실행하여 게임을 시작할 수 있습니다.
 
+- GitHub 저장소 Clone을 통한 다운로드
+1. 현재 저장소(https://github.com/ihtblwFIZ/SkyJump.git) 를 Clone합니다.
+2. src폴더의 [Main.java](http://Main.java) 파일을 실행시킵니다.
+   
 ### Feedback
 게임에 대한 피드백은 매우 소중합니다! 게임 플레이 중 발생한 버그나 개선 사항이 있다면 [이슈 트래커](https://github.com/ihtblwFIZ/SkyJump/issues)를 통해 알려주세요.
 
