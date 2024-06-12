@@ -236,8 +236,8 @@ public class PlayPanel extends BackgroudPanel implements Runnable {
     private void gameOver() {
         stage = 0;
         Component targetComponent = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-        Frame frame = (Frame) targetComponent;
-        frame.display = 2;
+        GameFrame gameFrame = (GameFrame) targetComponent;
+        gameFrame.display = 2;
     }
 
     public void setScore() {

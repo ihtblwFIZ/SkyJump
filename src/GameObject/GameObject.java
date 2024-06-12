@@ -58,14 +58,6 @@ public abstract class GameObject {
         this.y = y;
     }
 
-    public void setW(int w) {
-        this.w = w;
-    }
-
-    public void setH(int h) {
-        this.h = h;
-    }
-
     // 객체를 그리는 메서드
     // 이번 커밋까지는 draw 내용이 다 동일해서 그냥 여기에 구현해놓음
     public void draw(Graphics g) {
@@ -92,7 +84,9 @@ public abstract class GameObject {
         if (y < o.getY() && (y + h) > o.getY()) {
             if ((x > o.getX() && x < (o.getX() + o.getW()))
                     || ((x + w) > o.getX() && (x + w) < (o.getX() + o.getW()))) {
+                if (o instanceof CoinObject) return true;
                 y =  o.getY() - h;
+                isOnGround = true;
                 return true;
             }
         }
@@ -101,8 +95,9 @@ public abstract class GameObject {
         if (y < (o.getY() + o.getH()) && (y + h) > (o.getY() + o.getH())) {
             if ((x > o.getX() && x < (o.getX() + o.getW()))
                     || ((x + w) > o.getX() && (x + w) < (o.getX() + o.getW()))) {
+                if (o instanceof CoinObject) return true;
                 y = o.getY() + o.getH();
-                vy =0;
+                vy = 0;
                 return true;
             }
         }
@@ -111,6 +106,7 @@ public abstract class GameObject {
         if (x < o.getX() && (x + w) > o.getX()) {
             if ((y >= o.getY() && y <= (o.getY()+o.getH()))
                     || ((y + h) >= o.getY() && (y + h) <= (o.getY() + o.getH()))) {
+                if (o instanceof CoinObject) return true;
                 x = o.getX() - w;
                 return true;
             }
@@ -120,6 +116,7 @@ public abstract class GameObject {
         if (x < (o.getX() + o.getW()) && (x + w) > (o.getX() + o.getW())) {
             if ((y >= o.getY() && y <= (o.getY()+o.getH()))
                     || ((y + h) >= o.getY() && (y + h) <= (o.getY() + o.getH()))) {
+                if (o instanceof CoinObject) return true;
                 x = o.getX() + o.getW();
                 return true;
             }
@@ -127,19 +124,4 @@ public abstract class GameObject {
 
         return false;
     }
-
-    // isIn는 움직이는 o 내부에 this의 좌표가 있는지 확인
-    // 좌표를 바탕으로 계산함
-    // 충돌했으면 true, 하지 않았으면 false 반환
-    public boolean isIn(GameObject o) {
-        if (this instanceof CoinObject) {
-            if (y > o.getY() && (y + h) < o.getY()) {
-                return ((x > o.getX() && x < (o.getX() + o.getW()))
-                    || ((x + w) > o.getX() && (x + w) < (o.getX() + o.getW())));
-            }
-        }
-
-        return false;
-    }
-
 }

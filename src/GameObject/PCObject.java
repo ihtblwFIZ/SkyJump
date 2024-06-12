@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 
 public class PCObject extends GameObject {
+
     public PCObject(int x, int y, int w, int h) {
         super(x, y, w, h);
         color = Color.CYAN; //pc 색은 임의로 해놨음 변경o
@@ -13,18 +14,16 @@ public class PCObject extends GameObject {
     // draw는 추후 디자인 변경 사항이 생기면 다시 수정
 
     public void keyPressed(int code) {
-        int nX = getX();
         if (code == KeyEvent.VK_LEFT) {
-            nX -= SPEED*2;
+            vx = -SPEED;
         }
         else if (code == KeyEvent.VK_RIGHT) {
-            nX += SPEED*2;
+            vx = SPEED;
         }
-        if (code == KeyEvent.VK_UP /*&& isOnGround*/) {
+        if (code == KeyEvent.VK_UP && isOnGround) {
             vy = -JUMP_SPEED;
             isOnGround = false; // 점프 중에 또 다시 점프 불가
         }
-        setX(nX);
     }
 
     public void keyReleased(int code) {
@@ -38,10 +37,15 @@ public class PCObject extends GameObject {
         int nX = getX();
         int nY = getY();
 
+        // 이동 제어
+        //vx = vx > 0 ? vx - 0.1 * dt : vx + 0.1 * dt;
+        //if (preVx * vx < 0) vx = 0;
+        //preVx = vx;
         // 중력 적용
         vy += GRAVITY * dt;
 
-        nY += vy * dt;
+        nX += (int) (vx * dt);
+        nY += (int) (vy * dt);
 
         setX(nX);
         setY(nY);

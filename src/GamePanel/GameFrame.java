@@ -29,11 +29,6 @@ public class GameFrame extends JFrame implements Runnable, KeyListener {
         setVisible(true);
     }
 
-    public void runnigPanel() {
-        //어떤 패널이 돌아가는지
-        playPanel.run();
-    }
-
     @Override
     public void run() {
         while (true) {
@@ -81,11 +76,11 @@ public class GameFrame extends JFrame implements Runnable, KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         if (display == 1 && e.getKeyCode() == KeyEvent.VK_LEFT) {
-            playPanel.keyPressed(e);
+            playPanel.keyReleased(e);
         } else if (display == 1 && e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            playPanel.keyPressed(e);
+            playPanel.keyReleased(e);
         } else if (display == 1 && e.getKeyCode() == KeyEvent.VK_UP) {
-            playPanel.keyPressed(e);
+            playPanel.keyReleased(e);
         }
     }
 
