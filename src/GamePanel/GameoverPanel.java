@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class GameoverPanel extends BackgroudPanel {
     int width = 0, height = 0;
-    ImageIcon gameOverIcon = new ImageIcon("C:\\Users\\user\\OneDrive\\바탕 화면\\GAMEOVER.jpg");
+    ImageIcon gameOverIcon = new ImageIcon("Images/GAMEOVER.jpg");
     Image img = gameOverIcon.getImage();
     boolean newRecord = false;
 
