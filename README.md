@@ -35,4 +35,4 @@ SkyJump 게임을 다운로드하려면 [여기](https://github.com/ihtblwFIZ/Sk
 - [이연우](https://github.com/Dldusdn1)
 
 ### License
-SkyJump는 MIT 라이선스 하에 배포됩니다. 자세한 내용은 [LICENSE](https://github.com/ihtblwFIZ/SkyJump/blob/main/LICENSE) 파일을 참조하세요.
+SkyJump는 MIT 라이선스 하에 배포됩니다. 자세한 내용은 [LICENSE](https://github.com/ihtblwFIZ/SkyJump/tree/main/LISENCE) 파일을 참조하세요.
