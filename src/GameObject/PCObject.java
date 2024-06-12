@@ -13,16 +13,18 @@ public class PCObject extends GameObject {
     // draw는 추후 디자인 변경 사항이 생기면 다시 수정
 
     public void keyPressed(int code) {
+        int nX = getX();
         if (code == KeyEvent.VK_LEFT) {
-            vx = -SPEED;
+            nX -= SPEED*2;
         }
         else if (code == KeyEvent.VK_RIGHT) {
-            vx = SPEED;
+            nX += SPEED*2;
         }
         if (code == KeyEvent.VK_UP /*&& isOnGround*/) {
             vy = -JUMP_SPEED;
             isOnGround = false; // 점프 중에 또 다시 점프 불가
         }
+        setX(nX);
     }
 
     public void keyReleased(int code) {
@@ -39,8 +41,7 @@ public class PCObject extends GameObject {
         // 중력 적용
         vy += GRAVITY * dt;
 
-        nX += (int) (vx * dt);
-        nY += (int) (vy * dt);
+        nY += vy * dt;
 
         setX(nX);
         setY(nY);
