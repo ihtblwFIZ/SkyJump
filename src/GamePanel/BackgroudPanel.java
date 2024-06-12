@@ -16,7 +16,7 @@ public class BackgroudPanel extends JPanel {
         height = h;
     }
 
-    public void treadState(boolean state) {
+    public void threadState(boolean state) {
         running = state;
     }
 

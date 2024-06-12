@@ -8,8 +8,17 @@ public abstract class GameObject {
     // 객체의 좌표와 관련된 공통 변수 네 개
     // 변수에 직접 접근하지 못하도록 private으로 설정함
     // get, set으로 접근하게 함
-    private Integer x, y;
-    private Integer w, h;
+    protected Integer x, y;
+    protected Integer w, h;
+
+    // x, y 속도
+    protected double vx = 0.0, vy = 0.0;
+    // 땅에 있는지 (떨어지는 위치에 있지 않은지 확인)
+    protected boolean isOnGround = true;
+
+    protected static final double SPEED = 5.0;
+    protected static final double JUMP_SPEED = 5.0;
+    protected static final double GRAVITY = 0.05;
 
     // 물체를 그리는 데에 필요한 변수들 (draw에서 사용)
     Color color; // 물체의 색
@@ -49,41 +58,70 @@ public abstract class GameObject {
         this.y = y;
     }
 
-    public void setW(int w) {
-        this.w = w;
-    }
-
-    public void setH(int h) {
-        this.h = h;
-    }
-
     // 객체를 그리는 메서드
     // 이번 커밋까지는 draw 내용이 다 동일해서 그냥 여기에 구현해놓음
     public void draw(Graphics g) {
         g.setColor(color);
-        g.fillRect(getX(), getY(), getW(), getW());
+        g.fillRect(getX(), getY(), getW(), getH());
 
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setStroke(new BasicStroke(2));
-        Rectangle2D rect = new Rectangle2D.Float(getX(), getY(), getW(), getW());
+        g2d.setStroke(new BasicStroke(4));
+        Rectangle2D rect = new Rectangle2D.Float(getX(), getY(), getW(), getH());
+        g.setColor(borderColors);
         g2d.draw(rect);
     }
 
     // update는 움직이는 객체만 사용 (위치 정보를 업데이트)
-    public void update(double dt) {}
+    public void update(double dt) { }
 
     // resolve는 움직이는 객체만 사용
     // 움직이는 객체를 중심으로 다른 객체(o)와의 충돌 상황을 확인하고 위치 및 이동 방향 변경
     // 충돌이 있어서 변경 사항이 있으면 true, 없으면 false 반환
     public boolean resolve(GameObject o) {
+        if (o == null) return false;
+
+        // 1. 위에서 접근하는 경우 - isOnGround 설정 필요
+        if (y < o.getY() && (y + h) > o.getY()) {
+            if ((x > o.getX() && x < (o.getX() + o.getW()))
+                    || ((x + w) > o.getX() && (x + w) < (o.getX() + o.getW()))) {
+                if (o instanceof CoinObject) return true;
+                y =  o.getY() - h;
+                isOnGround = true;
+                return true;
+            }
+        }
+
+        // 2. 밑에서 접근하는 경우
+        if (y < (o.getY() + o.getH()) && (y + h) > (o.getY() + o.getH())) {
+            if ((x > o.getX() && x < (o.getX() + o.getW()))
+                    || ((x + w) > o.getX() && (x + w) < (o.getX() + o.getW()))) {
+                if (o instanceof CoinObject) return true;
+                y = o.getY() + o.getH();
+                vy = 0;
+                return true;
+            }
+        }
+
+        // 3. 벽의 왼쪽으로 접근하는 경우
+        if (x < o.getX() && (x + w) > o.getX()) {
+            if ((y >= o.getY() && y <= (o.getY()+o.getH()))
+                    || ((y + h) >= o.getY() && (y + h) <= (o.getY() + o.getH()))) {
+                if (o instanceof CoinObject) return true;
+                x = o.getX() - w;
+                return true;
+            }
+        }
+
+        // 4. 벽의 오른쪽으로 접근하는 경우
+        if (x < (o.getX() + o.getW()) && (x + w) > (o.getX() + o.getW())) {
+            if ((y >= o.getY() && y <= (o.getY()+o.getH()))
+                    || ((y + h) >= o.getY() && (y + h) <= (o.getY() + o.getH()))) {
+                if (o instanceof CoinObject) return true;
+                x = o.getX() + o.getW();
+                return true;
+            }
+        }
+
         return false;
     }
-
-    // isIn는 움직이는 객체가 다른 객체(o)에 충돌했는지 확인
-    // 좌표를 바탕으로 계산함
-    // 충돌했으면 true, 하지 않았으면 false 반환
-    public boolean isIn(GameObject o) {
-        return false;
-    }
-
 }
