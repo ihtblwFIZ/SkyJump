@@ -24,4 +24,5 @@ NPC 둘, 획득해야 하는 코인은 4개이다.
 ## 개임 오버 화면
 게임 진행 중, NPC(빨간색)에 부딪히면 게임이 종료된다.
 게임이 종료되면 최고 기록과 현재 기록이 기록된다.
-![image](https://github.com/ihtblwFIZ/SkyJump/assets/134569158/7a79c3d4-06a5-4c5d-9ea3-7ca731785b1b)
+![image](https://github.com/hwangjaehee/SkyJump/assets/134569158/c7811a8e-3219-4384-8f1c-6d74a32d38fd)
+
