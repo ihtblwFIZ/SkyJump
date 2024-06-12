@@ -20,9 +20,15 @@ SkyJump는 방향키를 조작하여 NPC를 피하여 코인을 획득하는 1�
 ![image](https://github.com/ihtblwFIZ/SkyJump/assets/134569158/7a79c3d4-06a5-4c5d-9ea3-7ca731785b1b)
 
 ### Download
+SkyJump 게임을 다운로드하려면 [여기](https://github.com/ihtblwFIZ/SkyJump/releases)에서 최신 릴리스를 확인하세요. 압축 파일을 다운로드하고, 압축을 푼 후 실행 파일을 실행하여 게임을 시작할 수 있습니다.
 
 ### Feedback
+게임에 대한 피드백은 매우 소중합니다! 게임 플레이 중 발생한 버그나 개선 사항이 있다면 [이슈 트래커](https://github.com/ihtblwFIZ/SkyJump/issues)를 통해 알려주세요.
 
 ### Contributor
+[김하연](https://github.com/ihtblwFIZ)
+[황재희](https://github.com/hwangjaehee)
+[전서진](https://github.com/iamseojin)
+[이연우](https://github.com/Dldusdn1)
 
 ### License
